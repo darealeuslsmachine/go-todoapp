@@ -62,3 +62,6 @@ migrate-up:
 
 migrate-down:
 	@make migrate-action action=down
+
+todoapp-run:
+	@go run cmd/todoapp/main.go
