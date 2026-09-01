@@ -27,6 +27,17 @@ func NewHTTPServer(
 	}
 }
 
+func (h *HTTPServer) RegisterAPIRouters(routes ...*APIVersionRouter) {
+	for _, router := range routes {
+		prefix := "/api/" + string(router.apiVersion)
+
+		h.mux.Handle(
+			prefix+"/",
+			http.StripPrefix(prefix, router),
+		)
+	}
+}
+
 func (h *HTTPServer) Run(ctx context.Context) error {
 	server := &http.Server{
 		Addr:    h.config.Addr,
@@ -70,4 +81,6 @@ func (h *HTTPServer) Run(ctx context.Context) error {
 
 		h.log.Warn("HTTP server stopped")
 	}
+
+	return nil
 }
