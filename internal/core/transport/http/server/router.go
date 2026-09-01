@@ -25,17 +25,6 @@ func NewAPIVersionRouter(apiVersion ApiVersion) *APIVersionRouter {
 	}
 }
 
-func (h *HTTPServer) RegisterAPIRouters(routes ...APIVersionRouter) {
-	for _, router := range routes {
-		prefix := "/api/" + string(router.apiVersion)
-
-		h.mux.Handle(
-			prefix+"/",
-			http.StripPrefix(prefix, router),
-		)
-	}
-}
-
 func (r *APIVersionRouter) RegisterRoutes(routes ...Route) {
 	for _, route := range routes {
 		pattern := fmt.Sprintf("%s %s", route.Method, route.Path)
