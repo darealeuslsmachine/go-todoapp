@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+
+	core_logger "github.com/darealeuslsmachine/go-todoapp/internal/core/logger"
 )
 
 type CreateUserRequest struct {
@@ -19,8 +21,15 @@ type CreateUserResponse struct {
 }
 
 func (h *UserHTTPHandler) CreateUser(rw http.ResponseWriter, r *http.Request) {
-	var req CreateUserRequest
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+	ctx := r.Context()
+	log := core_logger.FromContext(ctx)
+
+	log.Debug("invoke CreateUser handler")
+
+	var request CreateUserRequest
+	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
 		fmt.Println("error:", err)
 	}
+
+	rw.WriteHeader(http.StatusOK)
 }
