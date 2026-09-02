@@ -23,7 +23,7 @@ env-down:
 env-cleanup:
 	@read -p "Clear all environment volumes??? The database is cleared after this operation! [y/N]: " ans; \
 	if [ "$$ans" = "y" ]; then \
-		docker compose down todoapp-postgres && \
+		docker compose down todoapp-postgres todoapp-socat-port-forwarder &&  \
 		rm -rf out/pgdata && \
 		echo "Env files is cleared."; \
 	else \
@@ -65,5 +65,6 @@ migrate-down:
 
 todoapp-run:
 	@export LOGGER_FOLDER=${PROJECT_ROOT}/out/logs && \
+	export POSTGRES_HOST=localhost && \
 	go mod tidy && \
 	go run cmd/todoapp/main.go
